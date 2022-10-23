@@ -1,1 +1,0 @@
-# palettizer-deployment
