@@ -36,7 +36,7 @@ class PalettizerBotStack(Stack):
 
         # Instance
         instance = ec2.Instance(self, "Instance",
-            instance_type=ec2.InstanceType("t3.micro"),
+            instance_type=ec2.InstanceType("t3.small"),
             # TODO workaround, uncomment amzn_linux when the issue gets fixed https://github.com/aws/aws-cdk/issues/21011
             # machine_image=amzn_linux
             machine_image=ec2.MachineImage.from_ssm_parameter('/aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-x86_64'),
@@ -53,7 +53,8 @@ class PalettizerBotStack(Stack):
 
         # Userdata executes script from S3
         instance.user_data.add_execute_file_command(
-            file_path=local_path
+            file_path=local_path,
+            arguments='put_token_here' # TODO get the token from an external CLI argument
             )
         asset.grant_read(instance.role)
 
