@@ -25,12 +25,9 @@ class PalettizerBotStack(Stack):
             )
 
         # AMI
-        amzn_linux = ec2.MachineImage.latest_amazon_linux(
-            generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
-            edition=ec2.AmazonLinuxEdition.STANDARD,
-            virtualization=ec2.AmazonLinuxVirt.HVM,
-            storage=ec2.AmazonLinuxStorage.GENERAL_PURPOSE
-            )
+        # amzn_linux = ec2.MachineImage.latest_amazon_linux(
+        #     generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2022
+        #     )
 
         # Instance Role and SSM Managed Policy
         role = iam.Role(self, "InstanceSSM", assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
@@ -39,8 +36,10 @@ class PalettizerBotStack(Stack):
 
         # Instance
         instance = ec2.Instance(self, "Instance",
-            instance_type=ec2.InstanceType("t3.nano"),
-            machine_image=amzn_linux,
+            instance_type=ec2.InstanceType("t3.micro"),
+            # TODO workaround, uncomment amzn_linux when the issue gets fixed https://github.com/aws/aws-cdk/issues/21011
+            # machine_image=amzn_linux
+            machine_image=ec2.MachineImage.from_ssm_parameter('/aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-x86_64'),
             vpc = vpc,
             role = role
             )
@@ -59,6 +58,6 @@ class PalettizerBotStack(Stack):
         asset.grant_read(instance.role)
 
 app = App()
-PalettizerStack(app, "palettizer-bot")
+PalettizerBotStack(app, "palettizer-bot")
 
 app.synth()
