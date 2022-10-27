@@ -26,6 +26,6 @@ cd palettizer
 sudo pip3 install .
 
 echo "Starting the Telegram bot..."
-sudo python3 -m palettizerbot $TGBOT_TOKEN &
+(sudo python3 -m palettizerbot $TGBOT_TOKEN > /dev/null 2> /dev/null) &
 
 echo "Installation finished successfully"
