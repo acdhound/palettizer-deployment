@@ -5,7 +5,7 @@ from aws_cdk.aws_s3_assets import Asset
 from aws_cdk import (
     aws_ec2 as ec2,
     aws_iam as iam,
-    App, Stack
+    App, Stack, CfnParameter
 )
 
 from constructs import Construct
@@ -19,10 +19,11 @@ class PalettizerBotStack(Stack):
         super().__init__(scope, id, **kwargs)
 
         # VPC
-        vpc = ec2.Vpc(self, "VPC",
+        vpc = ec2.Vpc(
+            self, "VPC",
             nat_gateways=0,
-            subnet_configuration=[ec2.SubnetConfiguration(name="public",subnet_type=ec2.SubnetType.PUBLIC)]
-            )
+            subnet_configuration=[ec2.SubnetConfiguration(name="public", subnet_type=ec2.SubnetType.PUBLIC)]
+        )
 
         # AMI
         # amzn_linux = ec2.MachineImage.latest_amazon_linux(
@@ -35,14 +36,16 @@ class PalettizerBotStack(Stack):
         role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"))
 
         # Instance
-        instance = ec2.Instance(self, "Instance",
+        instance = ec2.Instance(
+            self, "Instance",
             instance_type=ec2.InstanceType("t3.small"),
-            # TODO workaround, uncomment amzn_linux when the issue gets fixed https://github.com/aws/aws-cdk/issues/21011
+            # TODO uncomment amzn_linux when the issue gets fixed https://github.com/aws/aws-cdk/issues/21011
             # machine_image=amzn_linux
-            machine_image=ec2.MachineImage.from_ssm_parameter('/aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-x86_64'),
-            vpc = vpc,
-            role = role
-            )
+            machine_image=ec2.MachineImage.from_ssm_parameter(
+                '/aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-x86_64'),
+            vpc=vpc,
+            role=role
+        )
 
         # Script in S3 as Asset
         asset = Asset(self, "Asset", path=os.path.join(dirname, "configure.sh"))
@@ -51,12 +54,17 @@ class PalettizerBotStack(Stack):
             bucket_key=asset.s3_object_key
         )
 
+        # Parameter for the script - Telegram Bot API token
+        bot_token = CfnParameter(self, "botToken", type="String",
+                                 description="API token for the Telegram Bot")
+
         # Userdata executes script from S3
         instance.user_data.add_execute_file_command(
             file_path=local_path,
-            arguments='put_token_here' # TODO get the token from an external CLI argument
+            arguments=bot_token.value_as_string
             )
         asset.grant_read(instance.role)
+
 
 app = App()
 PalettizerBotStack(app, "palettizer-bot")

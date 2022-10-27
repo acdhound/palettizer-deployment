@@ -14,7 +14,7 @@ pip install -r requirements.txt
 Deploy:
 ```bash
 cdk bootstrap
-cdk deploy --require-approval never
+cdk deploy --require-approval never --parameters botToken=<Telegram Bot token>
 ```
 
 Start session:
