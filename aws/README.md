@@ -1,8 +1,8 @@
 # palettizer-deployment
 
 Requirements:
-* Python 3
-* PIP
+* Python 3, PIP, virtualenv
+* nodejs, NPM
 * AWS CLI with configured credentials
 * AWS CDK
 

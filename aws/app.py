@@ -25,11 +25,6 @@ class PalettizerBotStack(Stack):
             subnet_configuration=[ec2.SubnetConfiguration(name="public", subnet_type=ec2.SubnetType.PUBLIC)]
         )
 
-        # AMI
-        # amzn_linux = ec2.MachineImage.latest_amazon_linux(
-        #     generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2022
-        #     )
-
         # Instance Role and SSM Managed Policy
         role = iam.Role(self, "InstanceSSM", assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
 
@@ -39,10 +34,7 @@ class PalettizerBotStack(Stack):
         instance = ec2.Instance(
             self, "Instance",
             instance_type=ec2.InstanceType("t3.small"),
-            # TODO uncomment amzn_linux when the issue gets fixed https://github.com/aws/aws-cdk/issues/21011
-            # machine_image=amzn_linux
-            machine_image=ec2.MachineImage.from_ssm_parameter(
-                '/aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-x86_64'),
+            machine_image=ec2.MachineImage.latest_amazon_linux2023(),
             vpc=vpc,
             role=role
         )
@@ -51,7 +43,8 @@ class PalettizerBotStack(Stack):
         asset = Asset(self, "Asset", path=os.path.join(dirname, "configure.sh"))
         local_path = instance.user_data.add_s3_download_command(
             bucket=asset.bucket,
-            bucket_key=asset.s3_object_key
+            bucket_key=asset.s3_object_key,
+            local_file="/usr/local/etc/startup.sh"
         )
 
         # Parameter for the script - Telegram Bot API token
