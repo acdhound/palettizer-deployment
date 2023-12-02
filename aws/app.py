@@ -33,7 +33,7 @@ class PalettizerBotStack(Stack):
         # Instance
         instance = ec2.Instance(
             self, "Instance",
-            instance_type=ec2.InstanceType("t3.small"),
+            instance_type=ec2.InstanceType("t3.micro"),
             machine_image=ec2.MachineImage.latest_amazon_linux2023(),
             vpc=vpc,
             role=role
