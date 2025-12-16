@@ -28,7 +28,9 @@ pip install -r requirements.txt
 Deploy:
 ```bash
 cdk bootstrap
-cdk deploy --require-approval never --parameters botToken=<Telegram Bot token>
+cdk deploy palettizer-bot --require-approval never \
+--parameters botToken=<Telegram Bot token> \
+--parameters pyVersion=3.11
 ```
 
 Start session:

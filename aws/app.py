@@ -64,5 +64,6 @@ class PalettizerBotStack(Stack):
 
 app = App()
 PalettizerBotStack(app, "palettizer-bot")
+PalettizerBotStack(app, "palettizer-bot-dev")
 
 app.synth()
