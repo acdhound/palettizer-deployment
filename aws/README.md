@@ -4,7 +4,7 @@ Requirements:
 * Python 3, PIP, virtualenv
 * nodejs, NPM
 * AWS CLI with configured credentials
-* AWS CDK (version 2.113.0 or higher)
+* AWS CDK (version 2.1034.0 or higher)
 
 Build:
 * Create and activate virtual env
