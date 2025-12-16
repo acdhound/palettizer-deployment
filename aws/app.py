@@ -50,11 +50,14 @@ class PalettizerBotStack(Stack):
         # Parameter for the script - Telegram Bot API token
         bot_token = CfnParameter(self, "botToken", type="String",
                                  description="API token for the Telegram Bot")
+        # Parameter for the script - Python version
+        py_version = CfnParameter(self, "pyVersion", type="String",
+                                 description="Python Version")
 
         # Userdata executes script from S3
         instance.user_data.add_execute_file_command(
             file_path=local_path,
-            arguments=bot_token.value_as_string
+            arguments=bot_token.value_as_string + " " + py_version.value_as_string
             )
         asset.grant_read(instance.role)
 
