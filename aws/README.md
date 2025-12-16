@@ -4,7 +4,7 @@ Requirements:
 * Python 3, PIP, virtualenv
 * nodejs, NPM
 * AWS CLI with configured credentials
-* AWS CDK (version 2.113.0 or higher)
+* AWS CDK (version 2.1034.0 or higher)
 
 Build:
 * Create and activate virtual env
@@ -28,7 +28,9 @@ pip install -r requirements.txt
 Deploy:
 ```bash
 cdk bootstrap
-cdk deploy --require-approval never --parameters botToken=<Telegram Bot token>
+cdk deploy palettizer-bot --require-approval never \
+--parameters botToken=<Telegram Bot token> \
+--parameters pyVersion=3.11
 ```
 
 Start session:
