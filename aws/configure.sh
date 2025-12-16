@@ -47,7 +47,7 @@ cd $PROJECT_HOME
 
 echo "Initializing a virtual env..."
 $PY_CMD -m virtualenv venv
-. /venv/bin/activate
+. ./venv/bin/activate
 
 echo "Building the project..."
 pip install .
