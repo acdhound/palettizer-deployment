@@ -48,10 +48,15 @@ cd $PROJECT_HOME
 
 if [ -n "$GIT_BRANCH" ]; then
   if git ls-remote --exit-code --heads origin "$GIT_BRANCH" >/dev/null 2>&1; then
+
+    echo "Checking out branch: $GIT_BRANCH"
     git fetch origin "$GIT_BRANCH" && git checkout "$GIT_BRANCH"
+
   else
+
     echo "Error: Branch '$GIT_BRANCH' does not exist."
     exit 1
+
   fi
 fi
 
