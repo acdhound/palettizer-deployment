@@ -1,10 +1,10 @@
 # palettizer-deployment
 
 Requirements:
-* Python 3, PIP, virtualenv
+* Python 3.13+, PIP, virtualenv
 * nodejs, NPM
 * AWS CLI with configured credentials
-* AWS CDK (version 2.1034.0 or higher)
+* AWS CDK (version 2.1107.0 or higher)
 
 Build:
 * Create and activate virtual env
@@ -25,10 +25,18 @@ venv\Scripts\activate.bat
 pip install -r requirements.txt
 ```
 
-Deploy:
+Deploy (main instance):
 ```bash
 cdk bootstrap
 cdk deploy palettizer-bot --require-approval never \
+--parameters botToken=<Telegram Bot token> \
+--parameters pyVersion=3.11
+```
+
+Deploy (dev):
+```bash
+cdk bootstrap
+cdk deploy palettizer-bot-dev --require-approval never \
 --parameters botToken=<Telegram Bot token> \
 --parameters pyVersion=3.11 \
 --parameters gitBranch=<Git Branch to Chekout (Optional)>
