@@ -47,7 +47,12 @@ Start session:
 aws ssm start-session --target i-xxxxxxx
 ```
 
-Destroy:
+Destroy main instance:
 ```bash
-cdk destroy
+cdk destroy palettizer-bot
+```
+
+Destroy dev:
+```bash
+cdk destroy palettizer-bot-dev
 ```
