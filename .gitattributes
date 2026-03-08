@@ -1,0 +1,2 @@
+# Ensure shell scripts always use LF so they run on Linux (e.g. EC2 user data)
+*.sh text eol=lf
