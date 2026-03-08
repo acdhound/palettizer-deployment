@@ -53,11 +53,15 @@ class PalettizerBotStack(Stack):
         # Parameter for the script - Python version
         py_version = CfnParameter(self, "pyVersion", type="String",
                                  description="Python Version")
+        # Parameter for the script - Git branch to checkout (optional)
+        git_branch = CfnParameter(self, "gitBranch", type="String",
+                                 description="Git branch to checkout (leave empty for default)",
+                                 default="")
 
         # Userdata executes script from S3
         instance.user_data.add_execute_file_command(
             file_path=local_path,
-            arguments=bot_token.value_as_string + " " + py_version.value_as_string
+            arguments=bot_token.value_as_string + " " + py_version.value_as_string + " " + git_branch.value_as_string
             )
         asset.grant_read(instance.role)
 

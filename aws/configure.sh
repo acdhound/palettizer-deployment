@@ -2,6 +2,7 @@
 
 TGBOT_TOKEN=$1
 PY_VERSION=$2
+GIT_BRANCH=$3
 PROJECT_PARENT=/usr/local/etc
 PROJECT_HOME=${PROJECT_PARENT}/palettizer
 PROJECT_REPO_URL=https://github.com/acdhound/palettizer.git
@@ -44,6 +45,15 @@ sudo chmod o+w $PROJECT_PARENT
 git clone $PROJECT_REPO_URL $PROJECT_HOME
 
 cd $PROJECT_HOME
+
+if [ -n "$GIT_BRANCH" ]; then
+  if git ls-remote --exit-code --heads origin "$GIT_BRANCH" >/dev/null 2>&1; then
+    git fetch origin "$GIT_BRANCH" && git checkout "$GIT_BRANCH"
+  else
+    echo "Error: Branch '$GIT_BRANCH' does not exist."
+    exit 1
+  fi
+fi
 
 echo "Initializing a virtual env..."
 $PY_CMD -m virtualenv venv

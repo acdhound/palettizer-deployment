@@ -30,7 +30,8 @@ Deploy:
 cdk bootstrap
 cdk deploy palettizer-bot --require-approval never \
 --parameters botToken=<Telegram Bot token> \
---parameters pyVersion=3.11
+--parameters pyVersion=3.11 \
+--parameters gitBranch=<Git Branch to Chekout (Optional)>
 ```
 
 Start session:
