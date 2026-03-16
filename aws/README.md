@@ -30,7 +30,7 @@ Deploy (main instance):
 cdk bootstrap
 cdk deploy palettizer-bot --require-approval never \
 --parameters botToken=<Telegram Bot token> \
---parameters pyVersion=3.11
+--parameters pyVersion=<Python version, e. g. 3.13>
 ```
 
 Deploy (dev):
@@ -38,7 +38,7 @@ Deploy (dev):
 cdk bootstrap
 cdk deploy palettizer-bot-dev --require-approval never \
 --parameters botToken=<Telegram Bot token> \
---parameters pyVersion=3.11 \
+--parameters pyVersion=<Python version> \
 --parameters gitBranch=<Git Branch to Chekout (Optional)>
 ```
 
